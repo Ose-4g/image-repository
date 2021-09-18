@@ -13,6 +13,7 @@ interface Env {
     ACCESS_KEY_ID: string
     SECRET_ACCESS_KEY: string
     BUCKET_NAME: string
+    IMAAGI_KEY: string
 }
 
 export default {
@@ -27,4 +28,5 @@ export default {
     ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
     SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,
     BUCKET_NAME: process.env.BUCKET_NAME,
+    IMAAGI_KEY: process.env.IMAAGI_KEY,
 } as Env

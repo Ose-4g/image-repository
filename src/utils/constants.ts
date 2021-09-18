@@ -1,6 +1,8 @@
 const constants = {
     mongooseModels: {
         USER: 'User',
+        IMAGE: 'Image',
+        IMAGE_TAG: 'ImageTag',
     },
     environments: {
         PRODUCTION: 'production',
