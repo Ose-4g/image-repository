@@ -1,6 +1,7 @@
 import axios from 'axios'
 import env from '../env.config'
 import AppError from '../errors/AppError'
+import logger from './logger'
 
 const { IMAAGI_KEY } = env
 const BASE_URL = 'https://api.imagga.com/v2'
@@ -14,6 +15,7 @@ const getTags = async (imageUrl: string) => {
         })
         return response.data
     } catch (error) {
+        logger.error(error)
         throw new AppError('An error occured', 500)
     }
 }
