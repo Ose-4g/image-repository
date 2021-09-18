@@ -4,7 +4,6 @@ const {
     combine,
     printf,
     colorize,
-    json,
     prettyPrint,
 } = format
 

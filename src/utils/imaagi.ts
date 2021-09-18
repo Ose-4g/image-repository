@@ -9,7 +9,7 @@ const getTags = async (imageUrl: string) => {
     try {
         const response = await axios({
             method: 'get',
-            url: `${BASE_URL}/tags?image_url=${imageUrl}`,
+            url: `${BASE_URL}/tags?threshold=30.0&image_url=${imageUrl}`,
             headers: { Authorization: `Basic ${IMAAGI_KEY}` },
         })
         return response.data

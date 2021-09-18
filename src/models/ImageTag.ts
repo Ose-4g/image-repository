@@ -18,5 +18,8 @@ const imageTagSchema = new Schema<ImageTag>({
     },
 })
 
-const ImageTagModel = model<ImageTag>(IMAGE_TAG, imageTagSchema)
+const ImageTagModel: Model<ImageTag> = model<ImageTag>(
+    IMAGE_TAG,
+    imageTagSchema
+)
 export default ImageTagModel

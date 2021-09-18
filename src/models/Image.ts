@@ -1,11 +1,11 @@
 import { Schema, model, Model, Document } from 'mongoose'
 import constants from '../utils/constants'
-import { getTags } from '../utils/imaagi'
 
 const { USER, IMAGE } = constants.mongooseModels
 
 export interface Image extends Document {
     url: string
+    tagged: boolean
 }
 
 const imageSchema = new Schema<Image>({
@@ -17,15 +17,11 @@ const imageSchema = new Schema<Image>({
         type: String,
         required: true,
     },
+    tagged: {
+        type: Boolean,
+        default: false,
+    },
 })
 
-imageSchema.post('save', async function (image: Image) {
-    try {
-        await getTags(image.url)
-    } catch (error) {
-        throw error
-    }
-})
-
-const ImageModel = model<Image>(IMAGE, imageSchema)
+const ImageModel: Model<Image> = model<Image>(IMAGE, imageSchema)
 export default ImageModel
