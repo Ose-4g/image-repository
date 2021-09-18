@@ -20,10 +20,11 @@ const imageSchema = new Schema<Image>({
 })
 
 imageSchema.post('save', async function (image: Image) {
-    console.log('here 3')
-    console.log(image)
-    await getTags(image.url)
-    console.log('here 4')
+    try {
+        await getTags(image.url)
+    } catch (error) {
+        throw error
+    }
 })
 
 const ImageModel = model<Image>(IMAGE, imageSchema)
