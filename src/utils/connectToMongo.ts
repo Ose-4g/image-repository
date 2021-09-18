@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import env from '../env.config'
+import logger from '../utils/logger'
 const { MONGO_URL } = env
 
 export default async (): Promise<void> => {
@@ -10,8 +11,8 @@ export default async (): Promise<void> => {
             useFindAndModify: false,
             useUnifiedTopology: true,
         })
-        console.log('DB connected successfully')
+        logger.info('DB connected successfully')
     } catch (err) {
-        console.log('DB connection not successful')
+        logger.error('DB connection not successful')
     }
 }

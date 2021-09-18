@@ -4,6 +4,7 @@ dotenv.config()
 import express, { Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import errorMiddleWare from './errors/errorHandler'
+import morgan from 'morgan'
 
 // import router
 
@@ -13,6 +14,10 @@ const app = express()
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+
+if (process.env.NODE_ENV !== 'production') {
+    app.use(morgan('dev'))
+}
 
 import router from './routes/index'
 

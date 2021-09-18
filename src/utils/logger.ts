@@ -1,22 +1,28 @@
-import { createLogger, transports, format } from 'winston'
-const { timestamp: timestampFn, combine, printf } = format
+import winston, { createLogger, transports, format } from 'winston'
+const {
+    timestamp: timestampFn,
+    combine,
+    printf,
+    colorize,
+    json,
+    prettyPrint,
+} = format
 
 // Format function
 const myFormat = printf(
-    ({ level, message, timestamp }) => `${level}: ${message} - ${timestamp}`
+    ({ level, message, timestamp }) => `${timestamp}: ${level}----> ${message} `
 )
 
 const logger = createLogger({
-    format: combine(timestampFn(), myFormat),
+    format: combine(colorize(), timestampFn(), prettyPrint(), myFormat),
 })
 
-logger.add(
-    new transports.Console({
-        handleExceptions: true,
-        format: combine(timestampFn(), myFormat),
-    })
-)
+logger.add(new transports.Console())
 
+winston.addColors({
+    info: 'green',
+    error: 'red',
+})
 logger.on('error', (err) => console.error(err.message))
 
 export default logger
