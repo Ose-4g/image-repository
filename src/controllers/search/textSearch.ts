@@ -3,6 +3,9 @@ import ImageTagModel, { ImageTag } from '../../models/ImageTag';
 import ImageModel, { Image } from '../../models/Image';
 import successResponse from '../../middleware/response';
 import getImagesFromTags from '../../utils/getImages';
+import constants from '../../utils/constants';
+
+const { PUBLIC } = constants.permissions;
 
 const searchByText: RequestHandler = async (req, res, next) => {
   const { search, page, limit } = req.query;
@@ -14,7 +17,7 @@ const searchByText: RequestHandler = async (req, res, next) => {
   _limit = Math.max(_limit, 1);
 
   if (!search) {
-    const allImages: Image[] = await ImageModel.find()
+    const allImages: Image[] = await ImageModel.find({ permission: PUBLIC })
       .skip((_page - 1) * _limit)
       .limit(_limit)
       .select('url');

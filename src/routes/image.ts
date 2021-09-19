@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { uploadS3 } from '../utils/upload';
-import addSingleImage from '../controllers/upload/addSingleImage';
-import addMultipleImages from '../controllers/upload/addMultipleImage';
+import addSingleImage from '../controllers/image/addSingleImage';
+import addMultipleImages from '../controllers/image/addMultipleImage';
 import { requireSignIn } from '../middleware/auth';
 import joiMiddleware from '../middleware/joiMiddleware';
 import { addImageSchema } from '../validators/image';
