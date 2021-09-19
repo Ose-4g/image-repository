@@ -5,6 +5,7 @@ const { IMAGE, IMAGE_TAG } = constants.mongooseModels
 
 export interface ImageTag extends Document {
     tag: string
+    image: Schema.Types.ObjectId
 }
 
 const imageTagSchema = new Schema<ImageTag>({

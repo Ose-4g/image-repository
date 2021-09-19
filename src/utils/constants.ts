@@ -11,11 +11,15 @@ const constants = {
     test: {
         TEST_USER: {
             firstName: 'test',
-            lastName: 'admin',
-            email: 'testadmin@iqube.com',
+            lastName: 'user',
+            email: 'user@image.com',
             password: 'password',
             passwordConfirm: 'password',
         },
+    },
+    permissions: {
+        PUBLIC: 'public',
+        PRIVATE: 'private',
     },
 }
 

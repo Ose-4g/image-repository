@@ -7,11 +7,13 @@ const addSingleImage: RequestHandler = async (req, res, next) => {
     if (!req.file) {
         return next(new AppError('No file uploaded', 400))
     }
-    const image = await ImageModel.create({
+    const { permission } = req.body
+    const image: Image = await ImageModel.create({
         userId: req.user._id,
-        url: (req.file as any).location,
+        url: (req.file as Express.MulterS3.File).location,
+        permission,
     })
     return successResponse(res, 201, 'Image added successfully', image.url)
 }
 
-export { addSingleImage }
+export default addSingleImage
