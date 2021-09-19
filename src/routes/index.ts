@@ -1,10 +1,10 @@
-import { Router } from 'express'
-import authRouter from './auth'
-import imageRouter from './image'
+import { Router } from 'express';
+import authRouter from './auth';
+import imageRouter from './image';
 
-const router: Router = Router()
+const router: Router = Router();
 
-router.use('/auth', authRouter)
-router.use('/image', imageRouter)
+router.use('/auth', authRouter);
+router.use('/image', imageRouter);
 
-export default router
+export default router;

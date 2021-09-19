@@ -1,27 +1,27 @@
-import { RequestHandler } from 'express'
-import AppError from '../../errors/AppError'
-import UserModel, { User } from '../../models/User'
-import successResponse from '../../middleware/response'
+import { RequestHandler } from 'express';
+import AppError from '../../errors/AppError';
+import UserModel, { User } from '../../models/User';
+import successResponse from '../../middleware/response';
 
 const signUp: RequestHandler = async (req, res, next) => {
-    const { firstName, lastName, email, password, passwordConfirm } = req.body
+  const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
-    // check that the email is not in use
-    const prevUsers: User[] = await UserModel.find({ email })
+  // check that the email is not in use
+  const prevUsers: User[] = await UserModel.find({ email });
 
-    if (prevUsers.length > 0) {
-        return next(new AppError('User with this email already exists', 400))
-    }
+  if (prevUsers.length > 0) {
+    return next(new AppError('User with this email already exists', 400));
+  }
 
-    const user: User = await UserModel.create({
-        firstName,
-        lastName,
-        email,
-        password,
-        passwordConfirm,
-    })
+  const user: User = await UserModel.create({
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirm,
+  });
 
-    return successResponse(res, 201, 'Successfully created user', null)
-}
+  return successResponse(res, 201, 'Successfully created user', null);
+};
 
-export default signUp
+export default signUp;
