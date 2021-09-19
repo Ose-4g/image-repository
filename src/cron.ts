@@ -9,7 +9,6 @@ const { PUBLIC } = constants.permissions;
 
 const cronJob = async () => {
   const setAllImageTags = cron.schedule('0 */1 * * * *', async () => {
-    logger.info('getting all public images not tagged');
     const untaggedImages: Image[] = await ImageModel.find({
       tagged: false,
       permission: PUBLIC,
@@ -38,6 +37,7 @@ const cronJob = async () => {
         }
       }
 
+      logger.info('Successfully tagged image');
       image.tagged = true;
       await image.save();
     }
