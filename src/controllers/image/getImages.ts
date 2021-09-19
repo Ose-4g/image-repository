@@ -6,7 +6,7 @@ import successResponse from '../../middleware/response';
 const { PUBLIC } = constants.permissions;
 
 const getMyImages: RequestHandler = async (req, res, next) => {
-  const { search, page, limit } = req.query;
+  const { page, limit } = req.query;
 
   let _page = parseInt(page as string) || 1;
   _page = Math.max(_page, 1);

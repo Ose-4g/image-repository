@@ -10,6 +10,6 @@ const router: Router = Router();
 router.use(requireSignIn);
 
 router.post('/add-one', uploadS3.single('image'), joiMiddleware(addImageSchema), addSingleImage);
-router.post('/add-many', uploadS3.array('image', 15), joiMiddleware(addImageSchema), addMultipleImages);
+router.post('/add-many', uploadS3.array('image', 1), joiMiddleware(addImageSchema), addMultipleImages);
 
 export default router;
