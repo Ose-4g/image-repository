@@ -3,6 +3,8 @@ import multerS3 from 'multer-s3';
 import path from 'path';
 import aws from 'aws-sdk';
 import env from '../env.config';
+import AppError from '../errors/AppError';
+import logger from './logger';
 
 const { ACCESS_KEY_ID, SECRET_ACCESS_KEY, BUCKET_NAME } = env;
 

@@ -8,13 +8,7 @@ import constants from './utils/constants';
 const { PUBLIC } = constants.permissions;
 
 const cronJob = async () => {
-  const test = cron.schedule('*/5 * * * * *', () => {
-    // console.log(Math.ceil(Date.now()/1000))
-    console.log('entered cron', Math.ceil(Date.now() / 1000));
-    setTimeout(() => console.log('timeout', Math.ceil(Date.now() / 1000)), 8000);
-  });
-
-  const setAllImageTags = cron.schedule('0 */5 * * * *', async () => {
+  const setAllImageTags = cron.schedule('0 */1 * * * *', async () => {
     logger.info('getting all public images not tagged');
     const untaggedImages: Image[] = await ImageModel.find({
       tagged: false,
@@ -29,18 +23,18 @@ const cronJob = async () => {
 
       // it there are no tags for that image
       //find the tags and add them
-      if (imagesTagged.length < 0) {
+      if (imagesTagged.length <= 0) {
         const tags = await getTags(image.url);
         const allTags = tags.result.tags.map((tag: any) => {
           const key = Object.keys(tag.tag)[0];
           return tag.tag[key];
         });
+
         for (const tag of allTags) {
-          console.log(tag);
-          // await ImageTagModel.create({
-          //     tag,
-          //     image: image._id,
-          // })
+          await ImageTagModel.create({
+            tag,
+            image: image._id,
+          });
         }
       }
 
