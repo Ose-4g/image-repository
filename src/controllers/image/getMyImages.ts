@@ -14,7 +14,7 @@ const getMyImages: RequestHandler = async (req, res, next) => {
   let _limit = parseInt(limit as string) || 10;
   _limit = Math.max(_limit, 1);
 
-  const allImages: Image[] = await ImageModel.find({ permission: PUBLIC, userId: req.user._id })
+  const allImages: Image[] = await ImageModel.find({ userId: req.user._id })
     .skip((_page - 1) * _limit)
     .limit(_limit)
     .select('url');
@@ -32,3 +32,5 @@ const getMyImages: RequestHandler = async (req, res, next) => {
 
   return successResponse(res, 200, `successfully fetched ${allImages.length} result(s)`, response);
 };
+
+export default getMyImages;
