@@ -3,8 +3,6 @@ import ImageModel, { Image } from '../../models/Image';
 import constants from '../../utils/constants';
 import successResponse from '../../middleware/response';
 
-const { PUBLIC } = constants.permissions;
-
 const getMyImages: RequestHandler = async (req, res, next) => {
   const { page, limit } = req.query;
 
