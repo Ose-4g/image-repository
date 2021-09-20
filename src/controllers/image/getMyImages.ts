@@ -30,7 +30,7 @@ const getMyImages: RequestHandler = async (req, res, next) => {
     .limit(_limit)
     .select('url');
 
-  const totalDocs: number = await ImageModel.countDocuments();
+  const totalDocs: number = await ImageModel.countDocuments(filter);
   const totalPages: number = Math.ceil(totalDocs / _limit);
   const response: any = {};
 
