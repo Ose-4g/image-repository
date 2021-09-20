@@ -7,6 +7,10 @@ import constants from '../../utils/constants';
 
 const { PUBLIC } = constants.permissions;
 
+/**
+ * Returns paginated result of search with text
+ * If no search is given it return paginated result of all images
+ */
 const searchByText: RequestHandler = async (req, res, next) => {
   const { search, page, limit } = req.query;
 

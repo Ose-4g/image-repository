@@ -8,7 +8,9 @@ import constants from './utils/constants';
 const { PUBLIC } = constants.permissions;
 
 const cronJob = async () => {
+  // sets image tags every minute for every untagged image that has been uploaded
   const setAllImageTags = cron.schedule('0 */1 * * * *', async () => {
+    // get all untagged in the database
     const untaggedImages: Image[] = await ImageModel.find({
       tagged: false,
       permission: PUBLIC,

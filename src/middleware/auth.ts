@@ -4,6 +4,9 @@ import AppError from '../errors/AppError';
 import env from '../env.config';
 import UserModel, { User } from '../models/User';
 
+/**
+ * Ensures a user is signed in
+ */
 const requireSignIn: RequestHandler = async (req, res, next) => {
   //get bearer token from request header
   let token = req.headers.authorization;

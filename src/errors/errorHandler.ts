@@ -8,6 +8,7 @@ const { NODE_ENV } = env;
 const DEVELOPMENT = 'development';
 
 const errorMiddleWare = async (error: AppError, req: Request, res: Response, next: NextFunction): Promise<void> => {
+  // if an error occurs, delete uploaded file from aws s3 bucket
   if (req.file) {
     const url = (req.file as Express.MulterS3.File).location;
     await deleteSingleImage(url);
@@ -31,6 +32,7 @@ const errorMiddleWare = async (error: AppError, req: Request, res: Response, nex
     body.error = error.stack;
   }
 
+  // if status code is not set, set it to 500
   if (!error.statusCode) {
     error.statusCode = 500;
   }

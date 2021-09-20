@@ -1,6 +1,11 @@
 import ImageTagModel, { ImageTag } from '../models/ImageTag';
 import ImageModel, { Image } from '../models/Image';
 
+/**
+ *
+ * @param tag :String
+ * @returns an array of imageIds
+ */
 const getImages = async (tag: string): Promise<string[]> => {
   const allImageTags: ImageTag[] = await ImageTagModel.find({ tag: { $regex: new RegExp(`.*${tag}.*`, 'i') } });
 
@@ -12,6 +17,14 @@ const getImages = async (tag: string): Promise<string[]> => {
   return allImageIds;
 };
 
+/**
+ * 
+ * @param allTags :array of tags to be searched
+ * @param _page :pagination
+ * @param _limit: pa
+gination
+ * @returns : paaaaginated result 
+ */
 const getImagesFromTags = async (allTags: string[], _page: number, _limit: number): Promise<any> => {
   const countMap = new Map<string, number>();
   const allImageIds = [];

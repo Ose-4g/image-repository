@@ -16,28 +16,22 @@ const login: RequestHandler = async (req, res, next) => {
     return next(new AppError('Password is required', 400));
   }
 
+  // check that user with email exists
   const user: User | null = await UserModel.findOne({ email }).select('+password');
 
   if (!user) {
     return next(new AppError('User not found', 404));
   }
 
+  // check the input password matches the users password
   const passwordsMatch = await bcrypt.compare(password, user.password);
 
   if (!passwordsMatch) {
     return next(new AppError('invalid email or password', 400));
   }
 
+  // generate accessToken and send in request
   const accessToken = generateAccessToken(String(user._id));
-
-  const today = new Date();
-  today.setDate(today.getDate() + 7);
-
-  res.cookie('accessToken', accessToken, {
-    expires: today,
-    secure: process.env.NODE_ENV === 'production',
-    httpOnly: true,
-  });
 
   return successResponse(res, 200, 'User Logged in sucessfully', {
     accessToken,

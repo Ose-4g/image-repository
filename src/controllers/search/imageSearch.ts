@@ -5,7 +5,15 @@ import { getTags } from '../../utils/imaagi';
 import AppError from '../../errors/AppError';
 import { deleteSingleImage } from '../../utils/deleteImages';
 
+/**
+ * Get's paginated result for search with an image
+ */
 const searchByImage: RequestHandler = async (req, res, next) => {
+  // check that images were uploaded
+  if (!req.file) {
+    return next(new AppError('No file uploaded', 400));
+  }
+
   const url: string = (req.file as Express.MulterS3.File).location;
 
   const { page, limit } = req.query;
@@ -17,12 +25,15 @@ const searchByImage: RequestHandler = async (req, res, next) => {
   _limit = Math.max(_limit, 1);
 
   try {
+    //get tags from image
+
     const tags = await getTags(url);
     const allTags = tags.result.tags.map((tag: any) => {
       const key = Object.keys(tag.tag)[0];
       return tag.tag[key];
     });
 
+    // get all images with similar tags
     const response = await getImagesFromTags(allTags, _page, _limit);
 
     successResponse(res, 200, `successfully fetched ${response.results.length} result(s)`, response);
