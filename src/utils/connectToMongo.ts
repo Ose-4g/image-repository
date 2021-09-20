@@ -13,6 +13,7 @@ export default async (): Promise<void> => {
     });
     logger.info('DB connected successfully');
   } catch (err) {
+    console.log(err);
     logger.error('DB connection not successful');
   }
 };

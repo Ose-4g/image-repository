@@ -16,6 +16,7 @@ interface Env {
 export default {
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
+  MONGO_URL: process.env.MONGO_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES: process.env.JWT_EXPIRES,
   ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
