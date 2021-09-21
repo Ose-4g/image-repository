@@ -69,4 +69,151 @@ describe('Tests for the signup endpoint', () => {
         done();
       });
   });
+
+  it('User sign up without firstName should give error', (done) => {
+    const userData = {
+      email,
+      lastName,
+      password,
+      passwordConfirm,
+    };
+
+    chai
+      .request(server)
+      .post(ENDPOINT)
+      .send(userData)
+      .end((err, res) => {
+        assert.equal(res.status, 400);
+        assert.isObject(res.body);
+        assert.equal(res.body.status, 'error');
+        assert.include(res.body.message.toLowerCase(), 'first');
+        done();
+      });
+  });
+
+  it('User sign up without lastName should give error', (done) => {
+    const userData = {
+      email,
+      firstName,
+      //lastName,
+      password,
+      passwordConfirm,
+    };
+
+    chai
+      .request(server)
+      .post(ENDPOINT)
+      .send(userData)
+      .end((err, res) => {
+        assert.equal(res.status, 400);
+        assert.isObject(res.body);
+        assert.equal(res.body.status, 'error');
+        assert.include(res.body.message.toLowerCase(), 'last');
+        done();
+      });
+  });
+
+  it('User sign up without lastName should give error', (done) => {
+    const userData = {
+      email,
+      firstName,
+      //lastName,
+      password,
+      passwordConfirm,
+    };
+
+    chai
+      .request(server)
+      .post(ENDPOINT)
+      .send(userData)
+      .end((err, res) => {
+        assert.equal(res.status, 400);
+        assert.isObject(res.body);
+        assert.equal(res.body.status, 'error');
+        assert.include(res.body.message.toLowerCase(), 'last');
+        done();
+      });
+  });
+
+  it('User sign up with passwordConfirm !== password  should give error', (done) => {
+    const userData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      passwordConfirm: passwordConfirm + 'h',
+    };
+
+    chai
+      .request(server)
+      .post(ENDPOINT)
+      .send(userData)
+      .end((err, res) => {
+        assert.equal(res.status, 400);
+        assert.isObject(res.body);
+        assert.equal(res.body.status, 'error');
+        assert.include(res.body.message.toLowerCase(), 'password');
+        assert.include(res.body.message.toLowerCase(), 'mismatch');
+        done();
+      });
+  });
+
+  it('User sign up with valid details should be successful', (done) => {
+    const userData = {
+      email,
+      firstName,
+      lastName,
+      password,
+      passwordConfirm,
+    };
+
+    chai
+      .request(server)
+      .post(ENDPOINT)
+      .send(userData)
+      .end((err, res) => {
+        assert.equal(res.status, 200);
+        assert.isObject(res.body);
+        assert.equal(res.body.status, 'success');
+        assert.include(res.body.message.toLowerCase(), 'success');
+        done();
+      });
+  });
+
+  describe('', function () {
+    beforeEach(async () => {
+      const user: User | null = await UserModel.findOne({ email: TEST_USER.email });
+      if (user) {
+        await UserModel.deleteMany({ email: TEST_USER.email });
+      }
+    });
+
+    after(async () => {
+      const user: User | null = await UserModel.findOne({ email: TEST_USER.email });
+      if (user) {
+        await UserModel.deleteMany({ email: TEST_USER.email });
+      }
+    });
+
+    it('User should not be able to sign up if that email is already being used', async () => {
+      const res = await chai.request(server).post(ENDPOINT).send(TEST_USER);
+
+      assert.equal(res.status, 400);
+      assert.isObject(res.body);
+      assert.equal(res.body.status, 'error');
+      assert.property(res.body, 'message');
+      assert.include(res.body.message.toLowerCase(), 'email');
+      assert.include(res.body.message.toLowerCase(), 'in use');
+    });
+
+    it('Document should save correctly to the DB', async () => {
+      const user = await UserModel.findOne({ email });
+
+      assert.isNotNull(user);
+      assert.isDefined(user);
+      assert.equal(user!.firstName.toLowerCase(), firstName.toLowerCase());
+      assert.equal(user!.lastName.toLowerCase(), lastName.toLowerCase());
+      assert.equal(user!.email.toLowerCase(), email.toLowerCase());
+    });
+  });
 });
