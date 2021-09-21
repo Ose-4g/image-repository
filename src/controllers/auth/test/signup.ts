@@ -1,3 +1,4 @@
+process.env.NODE_ENV = 'test';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import server from '../../../server';
@@ -9,7 +10,7 @@ const { email, lastName, firstName, password, passwordConfirm } = TEST_USER;
 
 chai.use(chaiHttp);
 
-const ENDPOINT = '/auth/signup';
+const ENDPOINT = '/api/v1/auth/signup';
 
 describe('Tests for the signup endpoint', () => {
   beforeEach(async () => {
@@ -172,7 +173,7 @@ describe('Tests for the signup endpoint', () => {
       .post(ENDPOINT)
       .send(userData)
       .end((err, res) => {
-        assert.equal(res.status, 200);
+        assert.equal(res.status, 201);
         assert.isObject(res.body);
         assert.equal(res.body.status, 'success');
         assert.include(res.body.message.toLowerCase(), 'success');
@@ -181,39 +182,29 @@ describe('Tests for the signup endpoint', () => {
   });
 
   describe('', function () {
-    beforeEach(async () => {
-      const user: User | null = await UserModel.findOne({ email: TEST_USER.email });
-      if (user) {
-        await UserModel.deleteMany({ email: TEST_USER.email });
-      }
-    });
-
-    after(async () => {
-      const user: User | null = await UserModel.findOne({ email: TEST_USER.email });
-      if (user) {
-        await UserModel.deleteMany({ email: TEST_USER.email });
-      }
-    });
-
     it('User should not be able to sign up if that email is already being used', async () => {
-      const res = await chai.request(server).post(ENDPOINT).send(TEST_USER);
-
-      assert.equal(res.status, 400);
-      assert.isObject(res.body);
-      assert.equal(res.body.status, 'error');
-      assert.property(res.body, 'message');
-      assert.include(res.body.message.toLowerCase(), 'email');
-      assert.include(res.body.message.toLowerCase(), 'in use');
+      chai
+        .request(server)
+        .post(ENDPOINT)
+        .send(TEST_USER)
+        .end((err, res) => {
+          assert.equal(res.status, 400);
+          assert.isObject(res.body);
+          assert.equal(res.body.status, 'error');
+          assert.property(res.body, 'message');
+          assert.include(res.body.message.toLowerCase(), 'email');
+          assert.include(res.body.message.toLowerCase(), 'in use');
+        });
     });
 
     it('Document should save correctly to the DB', async () => {
-      const user = await UserModel.findOne({ email });
-
-      assert.isNotNull(user);
-      assert.isDefined(user);
-      assert.equal(user!.firstName.toLowerCase(), firstName.toLowerCase());
-      assert.equal(user!.lastName.toLowerCase(), lastName.toLowerCase());
-      assert.equal(user!.email.toLowerCase(), email.toLowerCase());
+      UserModel.findOne({ email }).then((user) => {
+        assert.isNotNull(user);
+        assert.isDefined(user);
+        assert.equal(user!.firstName.toLowerCase(), firstName.toLowerCase());
+        assert.equal(user!.lastName.toLowerCase(), lastName.toLowerCase());
+        assert.equal(user!.email.toLowerCase(), email.toLowerCase());
+      });
     });
   });
 });
