@@ -1,15 +1,21 @@
+process.env.NODE_ENV = 'test';
 import { RequestHandler } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
 import bcrypt from 'bcryptjs';
 import { generateAccessToken } from '../../utils/token';
+import validator from 'validator';
 
 const login: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email) {
     return next(new AppError('Email is required', 400));
+  }
+
+  if (!validator.isEmail(email)) {
+    return next(new AppError('Invalid email', 400));
   }
 
   if (!password) {

@@ -9,7 +9,7 @@
     "dev": "nodemon",
     "start": "node dist/server.js",
     "test": "npm run build && mocha dist --timeout 25000 --recursive  --exit",
-    "new-test": "npm run build && mocha dist/controllers/track/tests/getAllTracks.js --timeout 25000 --recursive  --exit",
+    "new-test": "npm run build && mocha dist/controllers/auth/test/login.js --timeout 25000 --recursive  --exit",
     "lint": "eslint '*/**/*.{ts,tsx}' --quiet --fix",
     "format": "prettier --write src/",
     "prepare": "husky install"
