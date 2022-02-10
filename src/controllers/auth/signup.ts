@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, Request, Response, NextFunction } from 'express';
 import AppError from '../../errors/AppError';
 import UserModel, { User } from '../../models/User';
 import successResponse from '../../middleware/response';
