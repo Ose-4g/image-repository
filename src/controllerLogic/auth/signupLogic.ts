@@ -19,7 +19,7 @@ const signupLogic = async (
 
   // create user
   const user: User | void = await userRepository.createUser(firstName, lastName, email, password, password);
-
+  console.log('here 1');
   return user;
 };
 

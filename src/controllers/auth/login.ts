@@ -5,16 +5,18 @@ import loginLogic from '../../controllerLogic/auth/loginLogic';
 import UserRepository from '../../repository/UserRepository';
 
 const login = (userRepository: UserRepository) => {
-  return async (req: Request, res: Response, next: NextFunction): Promise<Response> => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
     const { email, password } = req.body;
 
-    const accessToken = await loginLogic(email, password, userRepository).catch((err) => {
-      return next(err);
-    });
+    try {
+      const accessToken = await loginLogic(email, password, userRepository);
 
-    return successResponse(res, 200, 'User Logged in sucessfully', {
-      accessToken,
-    });
+      return successResponse(res, 200, 'User Logged in sucessfully', {
+        accessToken,
+      });
+    } catch (error) {
+      return next(error);
+    }
   };
 };
 
