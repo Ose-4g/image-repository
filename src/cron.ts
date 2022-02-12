@@ -1,17 +1,18 @@
 import cron from 'node-cron';
 import { getTags } from './utils/imaagi';
-import ImageModel, { Image } from './models/Image';
+import { Image } from './models/Image';
 import ImageTagModel, { ImageTag } from './models/ImageTag';
 import logger from './utils/logger';
 import constants from './utils/constants';
+import ImageRepository from './repository/ImageRepository';
 
 const { PUBLIC } = constants.permissions;
 
-const cronJob = async () => {
+const cronJob = async (imageRepository: ImageRepository): Promise<void> => {
   // sets image tags every minute for every untagged image that has been uploaded
   const setAllImageTags = cron.schedule('0 */1 * * * *', async () => {
     // get all untagged in the database
-    const untaggedImages: Image[] = await ImageModel.find({
+    const untaggedImages: Image[] = await imageRepository.find({
       tagged: false,
       permission: PUBLIC,
     });
@@ -47,7 +48,5 @@ const cronJob = async () => {
 
   setAllImageTags.start();
 };
-
-cronJob();
 
 export default cronJob;

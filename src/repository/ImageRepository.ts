@@ -1,62 +1,57 @@
 import { FilterQuery } from 'mongoose';
-import { User } from '../models/User';
+import { Image } from '../models/Image';
 import BaseRepository from './baseRepository';
 import { PaginatedResult } from '../utils/types';
 
-class UserRepository extends BaseRepository<User> {
-  async createUser(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    passwordConfirm: string
-  ): Promise<User | void> {
+class ImageRepository extends BaseRepository<Image> {
+  async createUser(userId: string, url: string, permission: string): Promise<Image | void> {
     const data = await this.model.create({
-      email,
-      firstName,
-      lastName,
-      password,
-      passwordConfirm,
+      userId,
+      url,
+      permission,
     });
     return data;
   }
 
-  async findUserById(id: string): Promise<User | null> {
+  async findImageById(id: string): Promise<Image | null> {
     const data = await this.model.findById(id);
     return data;
   }
 
-  async findOneUser(filter: FilterQuery<User> = {}, select: string | null = null): Promise<User | null> {
+  async findOneImage(filter: FilterQuery<Image> = {}, select: string | null = null): Promise<Image | null> {
     let query = this.model.findOne(filter);
-
     if (select) query = query.select(select);
 
     const data = await query;
     return data;
   }
 
-  async find(filter: FilterQuery<User> = {}): Promise<User[]> {
+  async find(filter: FilterQuery<Image> = {}): Promise<Image[]> {
     const data = await this.model.find(filter);
     return data;
   }
   async findAndPaginate(
-    filter: FilterQuery<User>,
+    filter: FilterQuery<Image>,
     page: number,
     limit: number,
-    sort: number //-1 for descending order of course code, 1 for ascending
-  ): Promise<PaginatedResult<User>> {
+    sort: number, //-1 for descending order of course code, 1 for ascending,
+    select: string | null = null
+  ): Promise<PaginatedResult<Image>> {
     const totalDocuments = await this.model.countDocuments(filter);
     const totalPages = Math.ceil(totalDocuments / limit);
     const currentPage = page;
     const nextPage = page + 1 <= totalPages ? page + 1 : null;
     const prevPage = page - 1 >= 0 ? page - 1 : null;
 
-    const data = await this.model
+    let query = this.model
       .find(filter)
       .sort({ code: sort })
       .skip((page - 1) * limit)
       .limit(limit);
 
+    if (select) query = query.select(select);
+
+    const data = await query;
     return {
       totalDocuments,
       totalPages,
@@ -71,13 +66,13 @@ class UserRepository extends BaseRepository<User> {
     await this.model.findByIdAndDelete(id);
   }
 
-  async findOndeAndDelete(filter: FilterQuery<User>): Promise<void> {
+  async findOndeAndDelete(filter: FilterQuery<Image>): Promise<void> {
     await this.model.findOneAndDelete(filter);
   }
 
-  async deleteMany(filter: FilterQuery<User>): Promise<void> {
+  async deleteMany(filter: FilterQuery<Image>): Promise<void> {
     await this.model.deleteMany(filter);
   }
 }
 
-export default UserRepository;
+export default ImageRepository;
