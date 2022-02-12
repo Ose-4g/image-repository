@@ -4,11 +4,11 @@ import { Image } from './models/Image';
 import ImageTagModel, { ImageTag } from './models/ImageTag';
 import logger from './utils/logger';
 import constants from './utils/constants';
-import ImageRepository from './repository/ImageRepository';
+import Repository from './repository/Repository';
 
 const { PUBLIC } = constants.permissions;
 
-const cronJob = async (imageRepository: ImageRepository): Promise<void> => {
+const cronJob = async (imageRepository: Repository<Image>): Promise<void> => {
   // sets image tags every minute for every untagged image that has been uploaded
   const setAllImageTags = cron.schedule('0 */1 * * * *', async () => {
     // get all untagged in the database
