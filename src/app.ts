@@ -5,11 +5,10 @@ import express, { Request, Response } from 'express';
 import cookieParser from 'cookie-parser';
 import errorMiddleWare from './errors/errorHandler';
 import morgan from 'morgan';
-
+import app from './app-graphql';
 // import router
 
 //add middlewares
-const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
