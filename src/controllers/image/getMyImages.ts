@@ -10,6 +10,7 @@ const allPermissions = Object.values(constants.permissions);
  * Takes query parameters for pagination
  * Takes a query parameter "permission" which filters the images based on permission.
  */
+
 const getMyImages: RequestHandler = async (req, res, next) => {
   const { page, limit, permission } = req.query;
 

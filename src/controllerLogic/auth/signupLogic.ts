@@ -1,6 +1,6 @@
 import { User } from '../../models/User';
 import AppError from '../../errors/AppError';
-import UserRepository from '../../repository/UserRepository';
+import Repository from '../../repository/Repository';
 
 const signupLogic = async (
   firstName: string,
@@ -8,7 +8,7 @@ const signupLogic = async (
   email: string,
   password: string,
   passwordConfirm: string,
-  userRepository: UserRepository
+  userRepository: Repository<User>
 ): Promise<User | void> => {
   // check that the email is not in use
   const prevUsers: User[] = await userRepository.find({ email });
@@ -18,7 +18,13 @@ const signupLogic = async (
   }
 
   // create user
-  const user: User | void = await userRepository.createUser(firstName, lastName, email, password, password);
+  const user: User | void = await userRepository.create({
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirm,
+  } as User); //firstName, lastName, email, password, password);
   console.log('here 1');
   return user;
 };

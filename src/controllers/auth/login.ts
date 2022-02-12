@@ -9,7 +9,7 @@ const login = (userRepository: UserRepository) => {
     const { email, password } = req.body;
 
     try {
-      const accessToken = await loginLogic(email, password, userRepository);
+      const { accessToken } = await loginLogic(email, password, userRepository);
 
       return successResponse(res, 200, 'User Logged in sucessfully', {
         accessToken,

@@ -1,4 +1,4 @@
-import UserRepository from '../../repository/UserRepository';
+import Repository from '../../repository/Repository';
 import AppError from '../../errors/AppError';
 import validator from 'validator';
 import { User } from '../../models/User';
@@ -8,7 +8,7 @@ import { generateAccessToken } from '../../utils/token';
 const loginLogic = async (
   email: string,
   password: string,
-  userRepository: UserRepository
+  userRepository: Repository<User>
 ): Promise<{ accessToken: string }> => {
   if (!email) {
     throw new AppError('Email is required', 400);
@@ -23,7 +23,7 @@ const loginLogic = async (
   }
 
   // check that user with email exists
-  const user: User | null = await userRepository.findOneUser({ email }, '+password');
+  const user: User | null = await userRepository.findOne({ email }, '+password');
 
   if (!user) {
     throw new AppError('User not found', 404);
