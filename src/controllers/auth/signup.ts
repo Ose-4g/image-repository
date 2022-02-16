@@ -7,7 +7,9 @@ const signUp = (authService: AuthService) => {
     const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
     try {
-      const user = await authService.signupLogic(firstName, lastName, email, password, passwordConfirm);
+      const user = (await authService.signupLogic(firstName, lastName, email, password, passwordConfirm)) as User;
+      delete user.password;
+      delete user.passwordConfirm;
       return successResponse(res, 201, 'Successfully created user', user);
     } catch (error) {
       return next(error);

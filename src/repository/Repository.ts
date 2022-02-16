@@ -15,6 +15,11 @@ class Repository<T> {
     return data;
   }
 
+  async createMany(body: T[]): Promise<T[]> {
+    const data = await this.model.create(body);
+    return data;
+  }
+
   async findById(id: string): Promise<T | null> {
     const data = await this.model.findById(id);
     return data;
@@ -49,7 +54,7 @@ class Repository<T> {
     filter: FilterQuery<T>,
     page: number,
     limit: number,
-    sort: number, //-1 for descending order of course code, 1 for ascending,
+    sort: any, //-1 for descending order of course code, 1 for ascending,
     select: string | null = null
   ): Promise<PaginatedResult<T>> {
     const totalDocuments = await this.model.countDocuments(filter);
@@ -60,7 +65,7 @@ class Repository<T> {
 
     let query = this.model
       .find(filter)
-      .sort({ code: sort })
+      .sort(sort)
       .skip((page - 1) * limit)
       .limit(limit);
 

@@ -13,9 +13,9 @@ class AuthService {
   }
 
   async loginLogic(email: string, password: string): Promise<{ accessToken: string }> {
-    // if (!email) {
-    //   throw new AppError('Email is required', 400);
-    // }
+    if (!email) {
+      throw new AppError('Email is required', 400);
+    }
 
     if (!validator.isEmail(email)) {
       throw new AppError('Invalid email', 400);
