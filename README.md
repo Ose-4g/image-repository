@@ -1,5 +1,6 @@
 # Image Repository
-An API for users to upload images and search through the images.    
+An API for users to upload images and search through the images.   
+It has both REST and GraphQL architecture. 
 The API is dpeloyed at https://ose4g-image-repository.herokuapp.com/     
 To use the api look through the <a href="https://documenter.getpostman.com/view/15666544/UUxtFWU8">documentation</a>
 
@@ -32,3 +33,5 @@ $ npm install
   $ npm run build
   $ npm start
   ```
+
+To access the graphql go to ```/graphql```
