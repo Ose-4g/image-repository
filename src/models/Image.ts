@@ -1,10 +1,11 @@
-import { Schema, model, Model, Document } from 'mongoose';
+import { Schema, model, Model, Document, PopulatedDoc } from 'mongoose';
 import constants from '../utils/constants';
+import { User } from './User';
 
 const { USER, IMAGE } = constants.mongooseModels;
 
 export interface Image extends Document {
-  userId: Schema.Types.ObjectId;
+  userId: PopulatedDoc<User>;
   url: string;
   tagged: boolean;
   permission: string;

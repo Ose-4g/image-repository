@@ -1,28 +1,20 @@
-import { RequestHandler } from 'express';
-import AppError from '../../errors/AppError';
-import UserModel, { User } from '../../models/User';
+import { Request, Response, NextFunction } from 'express';
 import successResponse from '../../middleware/response';
+import AuthService from '../../services/AuthService';
 
-const signUp: RequestHandler = async (req, res, next) => {
-  const { firstName, lastName, email, password, passwordConfirm } = req.body;
+const signUp = (authService: AuthService) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+    const { firstName, lastName, email, password, passwordConfirm } = req.body;
 
-  // check that the email is not in use
-  const prevUsers: User[] = await UserModel.find({ email });
-
-  if (prevUsers.length > 0) {
-    return next(new AppError('User with this email already exists', 400));
-  }
-
-  // create user
-  const user: User = await UserModel.create({
-    firstName,
-    lastName,
-    email,
-    password,
-    passwordConfirm,
-  });
-
-  return successResponse(res, 201, 'Successfully created user', null);
+    try {
+      const user = (await authService.signupLogic(firstName, lastName, email, password, passwordConfirm)) as User;
+      delete user.password;
+      delete user.passwordConfirm;
+      return successResponse(res, 201, 'Successfully created user', user);
+    } catch (error) {
+      return next(error);
+    }
+  };
 };
 
 export default signUp;

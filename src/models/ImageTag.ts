@@ -1,11 +1,12 @@
-import { Schema, model, Model, Document } from 'mongoose';
+import { Schema, model, Model, Document, PopulatedDoc } from 'mongoose';
 import constants from '../utils/constants';
+import { Image } from './Image';
 
 const { IMAGE, IMAGE_TAG } = constants.mongooseModels;
 
 export interface ImageTag extends Document {
   tag: string;
-  image: Schema.Types.ObjectId;
+  image: PopulatedDoc<Image>;
 }
 
 const imageTagSchema = new Schema<ImageTag>({
